@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>S.GEETHA · AI/ML portfolio · blue theme</title>
+    <!-- clean modern fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome 6 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        /* BLUE background – deep professional blue */
+        background: #0a1a2f;
+        /* ALL TEXT WHITE (with variations for hierarchy) */
+        color: #ffffff;
+        line-height: 1.5;
+        position: relative;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ---------- NETWORK FLOATING ANIMATION (AI/ML STYLE) – ADAPTED FOR BLUE ---------- */
+      .network-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      /* canvas for network animation – lighter strokes on blue */
+      #networkCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        opacity: 0.65;
+      }
+
+      /* additional floating particles (glow nodes) for depth – cyan/blue on blue bg */
+      .network-bg .glow-node {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(100, 220, 255, 0.6); /* bright cyan */
+        border-radius: 50%;
+        box-shadow: 0 0 30px 8px rgba(0, 200, 255, 0.7);
+        animation: pulseGlow 6s infinite alternate;
+      }
+
+      @keyframes pulseGlow {
+        0% {
+          transform: scale(1);
+          opacity: 0.3;
+        }
+        100% {
+          transform: scale(2.2);
+          opacity: 0.9;
+        }
+      }
+
+      /* position some extra glowing nodes */
+      .glow-node:nth-child(1) {
+        top: 15%;
+        left: 8%;
+        animation-duration: 7s;
+      }
+      .glow-node:nth-child(2) {
+        top: 75%;
+        left: 85%;
+        animation-duration: 9s;
+      }
+      .glow-node:nth-child(3) {
+        top: 40%;
+        left: 45%;
+        animation-duration: 6s;
+      }
+      .glow-node:nth-child(4) {
+        top: 80%;
+        left: 20%;
+        animation-duration: 8s;
+      }
+      .glow-node:nth-child(5) {
+        top: 25%;
+        left: 70%;
+        animation-duration: 10s;
+      }
+      .glow-node:nth-child(6) {
+        top: 60%;
+        left: 30%;
+        animation-duration: 7.5s;
+      }
+
+      /* ensure all content sits above network layers */
+      .navbar,
+      .container,
+      footer {
+        position: relative;
+        z-index: 10;
+      }
+
+      /* gradients updated for blue theme */
+      :root {
+        --grad: linear-gradient(135deg, #5b8cff, #9f7aff); /* blue to purple */
+        --grad-soft: linear-gradient(145deg, #1a2f4a, #0f2640); /* dark blue */
+        --blue: #5b8cff;
+        --purple: #9f7aff;
+        --light-bg: #112a44; /* dark blue card background */
+        --warm-bg: #0a1a2f; /* matches body */
+        --shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.6),
+          0 4px 12px rgba(255, 255, 255, 0.05);
+        --border-light: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      /* navigation – dark blue glass */
+      .navbar {
+        background: rgba(10, 30, 50, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .nav-container {
+        max-width: 1300px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .logo a {
+        font-weight: 800;
+        font-size: 1.6rem;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        font-weight: 500;
+        color: #ffffff;
+        transition: 0.2s;
+        font-size: 1rem;
+        padding: 0.4rem 0;
+        border-bottom: 2px solid transparent;
+      }
+
+      .nav-links a:hover {
+        border-bottom-color: #9f7aff;
+        color: #b8a2ff;
+      }
+
+      .nav-email {
+        background: var(--grad);
+        color: white !important;
+        padding: 0.5rem 1.2rem !important;
+        border-radius: 40px;
+        border: none !important;
+        font-weight: 500;
+        box-shadow: 0 6px 14px rgba(90, 100, 255, 0.4);
+      }
+
+      .nav-email:hover {
+        opacity: 0.9;
+        border: none !important;
+        color: white !important;
+      }
+
+      /* main container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 2rem 4rem;
+      }
+
+      /* sections general */
+      section {
+        margin-bottom: 5rem;
+        scroll-margin-top: 80px;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 2.5rem;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+        letter-spacing: -0.02em;
+      }
+
+      /* HERO – dark blue card with white text */
+      .hero {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+        background: #112a44; /* deep blue card */
+        border-radius: 2.5rem;
+        padding: 3rem 3rem;
+        box-shadow: var(--shadow);
+        border: var(--border-light);
+        margin-top: 1rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1.2;
+        margin-bottom: 0.75rem;
+        letter-spacing: 1px;
+      }
+
+      .hero-content .subhead {
+        font-size: 1.4rem;
+        font-weight: 500;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.75rem;
+      }
+
+      .hero-content .summary {
+        font-size: 1.1rem;
+        color: #e0e0ff; /* light blue-white */
+        max-width: 550px;
+        margin-bottom: 2rem;
+      }
+
+      .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .btn-primary {
+        background: var(--grad);
+        border: none;
+        padding: 0.9rem 2.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 12px 22px -10px #5f7cff;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary:hover {
+        transform: scale(1.02);
+        box-shadow: 0 18px 28px -8px #9f7aff;
+      }
+
+      .hero-icon {
+        font-size: 2rem;
+        background: #1a3150;
+        width: 180px;
+        height: 180px;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1f3a5f;
+        color: #9fceff;
+        border: 2px dashed rgba(150, 200, 255, 0.3);
+      }
+
+      .hero-icon i {
+        font-size: 5rem;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      /* about + education grid – dark blue cards */
+      .about-card {
+        background: #112a44;
+        border-radius: 2rem;
+        padding: 2.5rem;
+        box-shadow: var(--shadow);
+        border: var(--border-light);
+      }
+
+      .career-text {
+        font-size: 1.2rem;
+        color: #f0f0ff;
+        background: #1a3052; /* medium blue */
+        padding: 1.5rem 2rem;
+        border-radius: 1.5rem;
+        margin-bottom: 2rem;
+        border-left: 6px solid #9f7aff;
+      }
+
+      .edu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.2rem;
+      }
+
+      .edu-item {
+        background: #1a3052;
+        padding: 1.5rem;
+        border-radius: 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: 0.2s;
+      }
+
+      .edu-item:hover {
+        border-color: #9f7aff;
+        box-shadow: 0 8px 18px #1f2a5a;
+      }
+
+      .edu-item h3 {
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 0.3rem;
+      }
+
+      .edu-item .institute {
+        font-weight: 500;
+        color: #b8beff;
+      }
+
+      .edu-item .score {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-top: 0.5rem;
+      }
+
+      /* skills grid – dark blue cards */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+      }
+
+      .skill-cat {
+        background: #112a44;
+        border-radius: 1.8rem;
+        padding: 1.8rem 1.5rem;
+        box-shadow: var(--shadow);
+        border: var(--border-light);
+        transition: all 0.25s;
+      }
+
+      .skill-cat:hover {
+        transform: translateY(-6px);
+        border-color: #9f7aff;
+      }
+
+      .skill-cat h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1.2rem;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 600;
+      }
+
+      .skill-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+      }
+
+      .skill-tag {
+        background: #1f3a5f;
+        color: #eef4ff;
+        padding: 0.5rem 1.2rem;
+        border-radius: 40px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: 0.2s;
+        border: 1px solid transparent;
+      }
+
+      .skill-tag:hover {
+        background: #1a2a48;
+        border-color: #9f7aff;
+        color: #ffffff;
+        box-shadow: 0 6px 12px #2f3a7a;
+      }
+
+      /* internship & projects (cards) */
+      .internship-cards,
+      .project-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2rem;
+      }
+
+      .card {
+        background: #112a44;
+        border-radius: 1.8rem;
+        padding: 2rem 1.5rem;
+        box-shadow: var(--shadow);
+        border: var(--border-light);
+        transition: 0.2s;
+      }
+
+      .card:hover {
+        border-color: #9f7aff;
+        box-shadow: 0 24px 38px -14px rgba(100, 120, 255, 0.4);
+      }
+
+      .card i {
+        font-size: 2rem;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+      }
+
+      .card h3 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #ffffff;
+      }
+
+      .card p {
+        color: #d0daff;
+        margin: 0.5rem 0 0.8rem;
+      }
+
+      .badge {
+        background: #1f3a6f;
+        color: #b0c8ff;
+        border-radius: 40px;
+        padding: 0.25rem 1rem;
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      /* contact */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        background: #112a44;
+        border-radius: 2rem;
+        padding: 2.5rem;
+        box-shadow: var(--shadow);
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.2rem;
+        background: #1a3052;
+        padding: 1.2rem 1.5rem;
+        border-radius: 3rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: 0.15s;
+      }
+
+      .contact-item:hover {
+        background: #1f3a6f;
+        border-color: #9f7aff;
+      }
+
+      .contact-item i {
+        font-size: 1.8rem;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .contact-item a {
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 500;
+      }
+
+      .location {
+        color: #ffffff;
+        font-weight: 500;
+      }
+
+      hr {
+        border: none;
+        border-top: 2px dashed rgba(255, 255, 255, 0.2);
+        margin: 2rem 0;
+      }
+
+      footer {
+        text-align: center;
+        color: #aac0ff;
+        margin-top: 3rem;
+        font-size: 0.95rem;
+      }
+
+      /* responsive */
+      @media (max-width: 700px) {
+        .nav-container {
+          flex-direction: column;
+          gap: 0.8rem;
+        }
+        .nav-links {
+          justify-content: center;
+          gap: 1rem;
+        }
+        .hero {
+          padding: 2rem 1.5rem;
+        }
+        .hero-content h1 {
+          font-size: 2.8rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .btn-group {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .btn-primary {
+          text-align: center;
+          justify-content: center;
+        }
+        .hero-content h1 {
+          font-size: 2.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Network Floating Background (Canvas + glow nodes) adapted for blue -->
+    <div class="network-bg">
+      <canvas id="networkCanvas"></canvas>
+      <div class="glow-node"></div>
+      <div class="glow-node"></div>
+      <div class="glow-node"></div>
+      <div class="glow-node"></div>
+      <div class="glow-node"></div>
+      <div class="glow-node"></div>
+    </div>
+
+    <!-- navigation with bold S.GEETHA -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <a href="#home"><strong>S.GEETHA</strong></a>
+        </div>
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#internship">Internship</a>
+          <a href="#contact" class="nav-email"
+            ><i class="fas fa-envelope" style="margin-right: 8px"></i
+            >geetha2025@gmail.com</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <!-- HERO with bold S.GEETHA -->
+      <section id="home">
+        <div class="hero">
+          <div class="hero-content">
+            <h1><strong>S.GEETHA</strong></h1>
+            <div class="subhead">BE CSE Student · Aspiring AI/ML Developer</div>
+            <p class="summary">
+              Passionate about Artificial Intelligence and Machine Learning with
+              strong foundations in Python and problem-solving. Interested in
+              building intelligent systems and data-driven applications. Seeking
+              AI/ML internship opportunities to apply academic knowledge in
+              real-world projects.
+            </p>
+            <div class="btn-group">
+              <a href="#" class="btn-primary"
+                ><i class="fas fa-download"></i> Download Resume</a
+              >
+              <span style="color: #c0d0ff"
+                ><i class="fas fa-map-pin" style="color: #9f7aff"></i> Tamil
+                Nadu</span
+              >
+            </div>
+          </div>
+          <div class="hero-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about">
+        <h2 class="section-title">About me</h2>
+        <div class="about-card">
+          <div class="career-text">
+            <i
+              class="fas fa-quote-left"
+              style="color: #9f7aff; opacity: 0.9; margin-right: 8px"
+            ></i>
+            Enthusiastic BE CSE student with strong analytical skills and a
+            passion for AI/ML and software development. Aiming to contribute to
+            intelligent systems and data-driven projects while continuously
+            upskilling. Organized, detail‑oriented, and eager to solve
+            real‑world problems.
+          </div>
+          <h3
+            style="
+              font-size: 1.6rem;
+              margin: 1.8rem 0 1rem;
+              font-weight: 600;
+              background: var(--grad);
+              -webkit-background-clip: text;
+              background-clip: text;
+              color: transparent;
+            "
+          >
+            📚 Education
+          </h3>
+          <div class="edu-grid">
+            <div class="edu-item">
+              <h3>BE Computer Science & Engineering</h3>
+              <div class="institute">Government College of Engineering</div>
+              <div class="score">CGPA 7.50</div>
+              <div style="margin-top: 0.5rem; color: #b0c4ff">2023 – 2027</div>
+            </div>
+            <div class="edu-item">
+              <h3>Diploma in CSE</h3>
+              <div class="institute">Thiagarajar Polytechnic College</div>
+              <div class="score">96%</div>
+              <div style="margin-top: 0.5rem; color: #b0c4ff">2020 – 2022</div>
+            </div>
+            <div class="edu-item">
+              <h3>Higher Secondary</h3>
+              <div class="institute">State Board, Tamil Nadu</div>
+              <div class="score">92%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills">
+        <h2 class="section-title">Technical skills</h2>
+        <div class="skills-grid">
+          <div class="skill-cat">
+            <h3>
+              <i class="fas fa-terminal" style="margin-right: 8px"></i
+              >Programming
+            </h3>
+            <div class="skill-items">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">C</span>
+              <span class="skill-tag">C++</span>
+              <span class="skill-tag">Java</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h3><i class="fas fa-microchip"></i> ML / Data</h3>
+            <div class="skill-items">
+              <span class="skill-tag">pandas</span>
+              <span class="skill-tag">NumPy</span>
+              <span class="skill-tag">scikit-learn</span>
+              <span class="skill-tag">Jupyter</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h3><i class="fas fa-code"></i> Web</h3>
+            <div class="skill-items">
+              <span class="skill-tag">HTML</span>
+              <span class="skill-tag">CSS</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h3><i class="fas fa-database"></i> Database & Tools</h3>
+            <div class="skill-items">
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">MySQL</span>
+              <span class="skill-tag">VS Code</span>
+              <span class="skill-tag">Git</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Internship -->
+      <section id="internship">
+        <h2 class="section-title">Internship experience</h2>
+        <div class="internship-cards">
+          <div class="card">
+            <i class="fas fa-vial"></i>
+            <h3>Software Testing intern</h3>
+            <p><span class="badge">QA Labs · 2 months</span></p>
+            <p>
+              Executed manual test cases for web applications, reported bugs
+              using JIRA, and participated in sprint reviews.
+            </p>
+          </div>
+          <div class="card">
+            <i class="fas fa-clipboard-list"></i>
+            <h3>Manual testing practice</h3>
+            <p><span class="badge">academic project</span></p>
+            <p>
+              Developed test plans and performed functional testing on a college
+              portal. Understood SDLC & STLC.
+            </p>
+          </div>
+          <div class="card">
+            <i class="fas fa-robot"></i>
+            <h3>Automation basics</h3>
+            <p><span class="badge">self‑learning</span></p>
+            <p>
+              Introduced to Selenium IDE & basic automation scripts. Exploring
+              test automation frameworks.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects">
+        <h2 class="section-title">Projects & involvement</h2>
+        <div class="project-cards">
+          <div class="card">
+            <i class="fas fa-glasses"></i>
+            <h3>AR Jewellery Try‑on with E‑commerce</h3>
+            <p>
+              Built an AR‑powered virtual try‑on system using real‑time camera
+              tracking and object overlay techniques. Implemented backend
+              authentication, product management, and secure transaction
+              workflow.
+            </p>
+          </div>
+          <div class="card">
+            <i class="fas fa-print"></i>
+            <h3>Garment printing management system</h3>
+            <p>
+              Developed a web‑based system to manage garment printing orders,
+              customer details, design tracking, and billing. Automated order
+              processing and inventory management.
+            </p>
+          </div>
+          <div class="card" style="border: 2px dashed #5f7aff">
+            <i class="fas fa-brain"></i>
+            <h3>ML price predictor (in progress)</h3>
+            <p>
+              Building a regression model to estimate house prices using
+              scikit‑learn and pandas. Future integration with a Flask API.
+            </p>
+            <span class="badge">coming soon</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact">
+        <h2 class="section-title">Let's connect</h2>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:geetha2025@gmail.com">geetha2025@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone-alt"></i>
+            <a href="tel:+919876543210">+91 98765 43210</a>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="location">Tamil Nadu, India</span>
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-linkedin"></i>
+            <a href="#">linkedin.com/in/sgeetha</a>
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-github"></i>
+            <a href="#">github.com/sgeetha-ml</a>
+          </div>
+        </div>
+      </section>
+
+      <hr />
+      <footer>© 2025 S.GEETHA — blue theme network · AI/ML vibe</footer>
+    </main>
+
+    <!-- JavaScript for network animation (canvas) - updated colors for blue theme -->
+    <script>
+      (function () {
+        const canvas = document.getElementById("networkCanvas");
+        const ctx = canvas.getContext("2d");
+        let width, height;
+        let particles = [];
+        const PARTICLE_COUNT = 45;
+        const MAX_DISTANCE = 200;
+        const CONNECTION_OPACITY = 0.4;
+
+        class Particle {
+          constructor() {
+            this.x = Math.random();
+            this.y = Math.random();
+            this.vx = (Math.random() - 0.5) * 0.0012;
+            this.vy = (Math.random() - 0.5) * 0.0012;
+            this.radius = Math.random() * 3 + 2;
+            this.speedFactor = 0.5 + Math.random() * 0.8;
+          }
+          update() {
+            this.x += this.vx * this.speedFactor;
+            this.y += this.vy * this.speedFactor;
+            if (this.x < 0) this.x = 1;
+            if (this.x > 1) this.x = 0;
+            if (this.y < 0) this.y = 1;
+            if (this.y > 1) this.y = 0;
+          }
+        }
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+          particles.push(new Particle());
+        }
+
+        function resizeCanvas() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          canvas.width = width;
+          canvas.height = height;
+        }
+
+        function draw() {
+          if (!width || !height) return;
+          ctx.clearRect(0, 0, width, height);
+
+          // draw connections with blue/cyan for blue bg
+          ctx.lineWidth = 1.5;
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const p1 = particles[i];
+              const p2 = particles[j];
+
+              const dx = (p1.x - p2.x) * width;
+              const dy = (p1.y - p2.y) * height;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              if (distance < MAX_DISTANCE) {
+                const opacity =
+                  (1 - distance / MAX_DISTANCE) * CONNECTION_OPACITY;
+                ctx.beginPath();
+                ctx.moveTo(p1.x * width, p1.y * height);
+                ctx.lineTo(p2.x * width, p2.y * height);
+                ctx.strokeStyle = `rgba(100, 200, 255, ${opacity})`; // bright cyan-blue
+                ctx.stroke();
+              }
+            }
+          }
+
+          // draw particles (nodes) – bright cyan/blue on dark blue
+          for (let p of particles) {
+            ctx.beginPath();
+            ctx.arc(p.x * width, p.y * height, p.radius, 0, Math.PI * 2);
+            const gradient = ctx.createRadialGradient(
+              p.x * width - 2,
+              p.y * height - 2,
+              1,
+              p.x * width,
+              p.y * height,
+              p.radius * 2.5
+            );
+            gradient.addColorStop(0, "rgba(150, 230, 255, 0.9)");
+            gradient.addColorStop(1, "rgba(50, 120, 255, 0.3)");
+            ctx.fillStyle = gradient;
+            ctx.shadowColor = "#4a9eff";
+            ctx.shadowBlur = 18;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+        }
+
+        function animate() {
+          for (let p of particles) {
+            p.update();
+          }
+          draw();
+          requestAnimationFrame(animate);
+        }
+
+        window.addEventListener("resize", () => {
+          resizeCanvas();
+        });
+
+        resizeCanvas();
+        animate();
+      })();
+    </script>
+  </body>
+</html>
